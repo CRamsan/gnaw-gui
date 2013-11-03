@@ -1,0 +1,11 @@
+*.class
+
+# Package Files #
+*.jar
+*.war
+*.ear
+/bin
+/nbproject/private/
+/build/
+
+javadoc
