@@ -732,9 +732,8 @@ public class MainGui extends JFrame implements DataSourceInterface,
 	@Override
 	public boolean deliverOfferResponse(Request request) {
 		try {
-			boolean result = request.getAction().equals(
-					Action.ACCEPT);
-			ProgressDialog newDialog = new ProgressDialog(result, this.application);
+			ProgressDialogSender newDialog = new ProgressDialogSender(request,
+					this.application);
 			newDialog.setVisible(true);
 			return true;
 		} catch (Exception e) {
@@ -750,6 +749,23 @@ public class MainGui extends JFrame implements DataSourceInterface,
 
 	@Override
 	public boolean deliverPushRequest(Request request) {
-		return true;
+		try {
+			if (request.getAction().equals(Action.ACCEPT)) {
+				ProgressDialogReceiver newDialog = new ProgressDialogReceiver(
+						request, this.application);
+				newDialog.setVisible(true);
+				return true;
+			} else {
+				return false;
+			}
+		} catch (Exception e) {
+			return false;
+		}
+	}
+
+	@Override
+	public void setProgress(int status) {
+		// TODO Auto-generated method stub
+
 	}
 }

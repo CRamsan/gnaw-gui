@@ -14,8 +14,9 @@ import javax.swing.JPanel;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.border.EmptyBorder;
 
-import com.gnaw.interfaces.GnawApplicationInterface;
+import com.gnaw.GnawApplication;
 import com.gnaw.request.Request;
+import com.gnaw.response.Response;
 
 public class AcceptRequestDialog extends JDialog {
 
@@ -24,7 +25,7 @@ public class AcceptRequestDialog extends JDialog {
 	/**
 	 * Create the dialog.
 	 */
-	public AcceptRequestDialog(final GnawApplicationInterface application, final Request request) {
+	public AcceptRequestDialog(final GnawApplication application, final Request request) {
 		setBounds(100, 100, 450, 300);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -66,7 +67,7 @@ public class AcceptRequestDialog extends JDialog {
 				okButton.addMouseListener(new MouseAdapter() {
 					@Override
 					public void mouseClicked(MouseEvent e) {
-						application.sendOfferResponse(request.getAddress(), true);
+						application.sendOfferResponse(request.getAddress(), true, request.getFileName());
 					}
 				});
 				okButton.setActionCommand("OK");
@@ -78,7 +79,7 @@ public class AcceptRequestDialog extends JDialog {
 				cancelButton.addMouseListener(new MouseAdapter() {
 					@Override
 					public void mouseClicked(MouseEvent e) {
-						application.sendOfferResponse(request.getAddress(), false);
+						application.sendOfferResponse(request.getAddress(), false, null);
 					}
 				});
 				buttonPane.add(cancelButton);

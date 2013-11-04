@@ -13,21 +13,27 @@ import javax.swing.JProgressBar;
 import javax.swing.border.EmptyBorder;
 
 import com.gnaw.GnawApplication;
+import com.gnaw.interfaces.TransmissionProgressInterface;
+import com.gnaw.request.Request;
+import com.gnaw.request.Request.Action;
+import com.gnaw.response.Response;
 
-public class ProgressDialog extends JDialog {
+public class ProgressDialogSender extends JDialog implements
+		TransmissionProgressInterface {
 
 	private final JPanel contentPanel = new JPanel();
+	private JProgressBar progressBar;
 
 	/**
 	 * Create the dialog.
 	 */
-	public ProgressDialog(boolean accept, GnawApplication application) {
+	public ProgressDialogSender(Request request, GnawApplication application) {
 		setBounds(100, 100, 450, 300);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
-		if (accept) {
-			JProgressBar progressBar = new JProgressBar();
+		if (request.getAction().equals(Action.ACCEPT)) {
+			progressBar = new JProgressBar();
 			GroupLayout gl_contentPanel = new GroupLayout(contentPanel);
 			gl_contentPanel
 					.setHorizontalGroup(gl_contentPanel.createParallelGroup(
@@ -49,9 +55,11 @@ public class ProgressDialog extends JDialog {
 											GroupLayout.PREFERRED_SIZE)
 									.addContainerGap(204, Short.MAX_VALUE)));
 			contentPanel.setLayout(gl_contentPanel);
-			
-			
-			
+			if (application.sendPushRequest(request.getAddress(),
+					request.getFileName()).getCode() == Response.MESSAGE_DELIVERED) {
+				application.sendFile(request.getAddress(),
+						request.getFileName(), this);
+			}
 		} else {
 			JLabel lblTheUserRejected = new JLabel("The user rejected the file");
 			contentPanel.add(lblTheUserRejected);
@@ -66,5 +74,10 @@ public class ProgressDialog extends JDialog {
 				buttonPane.add(cancelButton);
 			}
 		}
+	}
+
+	@Override
+	public void setProgress(int status) {
+		progressBar.setValue(status);
 	}
 }
