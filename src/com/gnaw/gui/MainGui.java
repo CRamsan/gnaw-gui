@@ -750,14 +750,10 @@ public class MainGui extends JFrame implements DataSourceInterface,
 	@Override
 	public boolean deliverPushRequest(Request request) {
 		try {
-			if (request.getAction().equals(Action.ACCEPT)) {
-				ProgressDialogReceiver newDialog = new ProgressDialogReceiver(
-						request, this.application);
-				newDialog.setVisible(true);
-				return true;
-			} else {
-				return false;
-			}
+			ProgressDialogReceiver newDialog = new ProgressDialogReceiver(
+					request, this.application);
+			newDialog.setVisible(true);
+			return true;
 		} catch (Exception e) {
 			return false;
 		}

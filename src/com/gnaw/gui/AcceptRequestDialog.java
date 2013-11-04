@@ -67,7 +67,7 @@ public class AcceptRequestDialog extends JDialog {
 				okButton.addMouseListener(new MouseAdapter() {
 					@Override
 					public void mouseClicked(MouseEvent e) {
-						application.sendOfferResponse(request.getAddress(), true, request.getFileName());
+						application.sendOfferResponse(request.getAddress(), true, request.getFileName(), request.getToken());
 					}
 				});
 				okButton.setActionCommand("OK");
@@ -79,7 +79,7 @@ public class AcceptRequestDialog extends JDialog {
 				cancelButton.addMouseListener(new MouseAdapter() {
 					@Override
 					public void mouseClicked(MouseEvent e) {
-						application.sendOfferResponse(request.getAddress(), false, null);
+						application.sendOfferResponse(request.getAddress(), false, null, null);
 					}
 				});
 				buttonPane.add(cancelButton);

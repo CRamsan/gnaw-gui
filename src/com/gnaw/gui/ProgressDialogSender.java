@@ -55,11 +55,12 @@ public class ProgressDialogSender extends JDialog implements
 											GroupLayout.PREFERRED_SIZE)
 									.addContainerGap(204, Short.MAX_VALUE)));
 			contentPanel.setLayout(gl_contentPanel);
-			if (application.sendPushRequest(request.getAddress(),
-					request.getFileName()).getCode() == Response.MESSAGE_DELIVERED) {
-				application.sendFile(request.getAddress(),
-						request.getFileName(), this);
-			}
+
+			application.sendPushRequest(request.getAddress(),
+					request.getToken());
+			application
+					.sendFile(request.getAddress(), request.getToken(), this);
+
 		} else {
 			JLabel lblTheUserRejected = new JLabel("The user rejected the file");
 			contentPanel.add(lblTheUserRejected);
