@@ -42,6 +42,8 @@ import com.gnaw.discovery.event.ClientFoundEvent;
 import com.gnaw.discovery.event.ClientFoundEventListener;
 import com.gnaw.interfaces.DataSourceInterface;
 import com.gnaw.models.SharedFile;
+import com.gnaw.request.Request;
+import com.gnaw.request.Request.Action;
 
 /**
  * 
@@ -225,6 +227,9 @@ public class MainGui extends JFrame implements DataSourceInterface,
 		btnNewButton_2.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				SendFileDialog newDialog = new SendFileDialog(application,
+						(String) list.getSelectedValue());
+				newDialog.setVisible(true);
 			}
 		});
 
@@ -713,20 +718,38 @@ public class MainGui extends JFrame implements DataSourceInterface,
 	}
 
 	@Override
-	public boolean deliverOffer() {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean deliverOffer(Request request) {
+		try {
+			AcceptRequestDialog newDialog = new AcceptRequestDialog(
+					application, request);
+			newDialog.setVisible(true);
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
 	}
 
 	@Override
-	public boolean deliverOfferResponse() {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean deliverOfferResponse(Request request) {
+		try {
+			boolean result = request.getAction().equals(
+					Action.ACCEPT);
+			ProgressDialog newDialog = new ProgressDialog(result, this.application);
+			newDialog.setVisible(true);
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
 	}
 
 	@Override
 	public boolean deliverSearchRequest() {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	@Override
+	public boolean deliverPushRequest(Request request) {
+		return true;
 	}
 }
