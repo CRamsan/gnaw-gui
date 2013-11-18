@@ -6,8 +6,6 @@
 
 package com.gnaw.gui;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
@@ -43,7 +41,6 @@ import com.gnaw.discovery.event.ClientFoundEventListener;
 import com.gnaw.interfaces.DataSourceInterface;
 import com.gnaw.models.SharedFile;
 import com.gnaw.request.Request;
-import com.gnaw.request.Request.Action;
 
 /**
  * 

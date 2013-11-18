@@ -57,9 +57,7 @@ public class ProgressDialogSender extends JDialog implements
 			contentPanel.setLayout(gl_contentPanel);
 
 			application.sendPushRequest(request.getAddress(),
-					request.getToken());
-			application
-					.sendFile(request.getAddress(), request.getToken(), this);
+					request.getToken(), this);
 
 		} else {
 			JLabel lblTheUserRejected = new JLabel("The user rejected the file");
