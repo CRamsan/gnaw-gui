@@ -6,6 +6,8 @@
 
 package com.gnaw.gui;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
@@ -14,6 +16,7 @@ import javax.swing.DefaultListModel;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -49,6 +52,7 @@ import com.gnaw.request.Request;
 public class MainGui extends JFrame implements DataSourceInterface,
 		ClientFoundEventListener, BroadcastingEndEventListener {
 
+	private Profile profile = new Profile();
 	private GnawApplication application;
 	private SharedFile sharedFiles = new SharedFile();
 
@@ -115,6 +119,20 @@ public class MainGui extends JFrame implements DataSourceInterface,
 		jTextField1.setText(System.getProperty("user.home") + File.separator
 				+ "Gnaw");
 		jButton2 = new JButton();
+		jButton2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				final JFileChooser fc = new JFileChooser();
+				fc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+				int returnVal = fc.showOpenDialog(MainGui.this);
+				if (returnVal == JFileChooser.APPROVE_OPTION) {
+	                File file = fc.getSelectedFile();
+	                jTextField1.setText(file.getAbsolutePath());
+	                System.out.println("Opening: " + file.getName() + ".");
+	            } else {
+	            	System.out.println("Open command cancelled by user.");
+	            }
+			}
+		});
 		jToggleButton1 = new JToggleButton();
 		jToggleButton1.addMouseListener(new MouseAdapter() {
 			@Override
@@ -141,6 +159,8 @@ public class MainGui extends JFrame implements DataSourceInterface,
 						seconds = -1;
 						break;
 					}
+					application.saveSettings("broadcast_ttl",
+							Integer.toString(seconds));
 					application.startBroadcasting(MainGui.this, seconds);
 				} else {
 					application.stopBroadcasting();
@@ -156,6 +176,7 @@ public class MainGui extends JFrame implements DataSourceInterface,
 					jTextField1.setEnabled(false);
 					jButton2.setEnabled(false);
 					jToggleButton2.setText("Disable Sharing");
+					application.saveSettings("shared_folder", jTextField1.getText());
 				} else {
 					jTextField1.setEnabled(true);
 					jButton2.setEnabled(true);
@@ -404,6 +425,15 @@ public class MainGui extends JFrame implements DataSourceInterface,
 
 		lbDiscoveryTime = new JLabel("10 Seconds");
 
+		JButton btnSave = new JButton("Save");
+		btnSave.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				profile.setName(jTextField2.getText());
+				application.saveSettings("profile_name", profile.getName());
+			}
+		});
+
 		GroupLayout jPanel2Layout = new GroupLayout(jPanel2);
 		jPanel2Layout
 				.setHorizontalGroup(jPanel2Layout
@@ -417,33 +447,36 @@ public class MainGui extends JFrame implements DataSourceInterface,
 																Alignment.LEADING)
 														.addComponent(
 																jSeparator1,
+																Alignment.TRAILING,
 																GroupLayout.PREFERRED_SIZE,
 																471,
 																Short.MAX_VALUE)
 														.addGroup(
+																Alignment.TRAILING,
 																jPanel2Layout
 																		.createSequentialGroup()
 																		.addContainerGap()
 																		.addGroup(
 																				jPanel2Layout
 																						.createParallelGroup(
-																								Alignment.LEADING)
+																								Alignment.TRAILING)
 																						.addComponent(
 																								jSeparator3,
-																								GroupLayout.DEFAULT_SIZE,
-																								471,
+																								GroupLayout.PREFERRED_SIZE,
+																								459,
 																								Short.MAX_VALUE)
 																						.addComponent(
 																								jSeparator2,
-																								GroupLayout.DEFAULT_SIZE,
-																								471,
+																								GroupLayout.PREFERRED_SIZE,
+																								459,
 																								Short.MAX_VALUE)
 																						.addComponent(
 																								jSlider1,
 																								GroupLayout.DEFAULT_SIZE,
-																								471,
+																								459,
 																								Short.MAX_VALUE)
 																						.addGroup(
+																								Alignment.LEADING,
 																								jPanel2Layout
 																										.createSequentialGroup()
 																										.addGap(12)
@@ -457,8 +490,12 @@ public class MainGui extends JFrame implements DataSourceInterface,
 																										.addComponent(
 																												jTextField2,
 																												GroupLayout.DEFAULT_SIZE,
-																												402,
-																												Short.MAX_VALUE))
+																												320,
+																												Short.MAX_VALUE)
+																										.addPreferredGap(
+																												ComponentPlacement.RELATED)
+																										.addComponent(
+																												btnSave))
 																						.addComponent(
 																								jLabel1)
 																						.addComponent(
@@ -473,18 +510,17 @@ public class MainGui extends JFrame implements DataSourceInterface,
 																												lbDiscoveryTime)
 																										.addPreferredGap(
 																												ComponentPlacement.RELATED,
-																												GroupLayout.DEFAULT_SIZE,
+																												285,
 																												Short.MAX_VALUE)
 																										.addComponent(
 																												jToggleButton1))
 																						.addGroup(
-																								Alignment.TRAILING,
 																								jPanel2Layout
 																										.createSequentialGroup()
 																										.addComponent(
 																												jTextField1,
 																												GroupLayout.DEFAULT_SIZE,
-																												379,
+																												367,
 																												Short.MAX_VALUE)
 																										.addPreferredGap(
 																												ComponentPlacement.RELATED)
@@ -495,7 +531,7 @@ public class MainGui extends JFrame implements DataSourceInterface,
 																jPanel2Layout
 																		.createSequentialGroup()
 																		.addContainerGap(
-																				342,
+																				330,
 																				Short.MAX_VALUE)
 																		.addComponent(
 																				jToggleButton2)))
@@ -564,7 +600,8 @@ public class MainGui extends JFrame implements DataSourceInterface,
 																jTextField2,
 																GroupLayout.PREFERRED_SIZE,
 																GroupLayout.DEFAULT_SIZE,
-																GroupLayout.PREFERRED_SIZE))
+																GroupLayout.PREFERRED_SIZE)
+														.addComponent(btnSave))
 										.addPreferredGap(
 												ComponentPlacement.UNRELATED)
 										.addComponent(jSeparator3,
@@ -587,6 +624,9 @@ public class MainGui extends JFrame implements DataSourceInterface,
 
 		this.application = new GnawApplication(this);
 		this.application.init();
+		
+		
+		
 	}
 
 	/**
@@ -658,7 +698,6 @@ public class MainGui extends JFrame implements DataSourceInterface,
 
 	@Override
 	public Profile getProfile() {
-		Profile profile = new Profile();
 		profile.setName(jTextField2.getText());
 		return profile;
 	}
