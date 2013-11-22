@@ -26,8 +26,9 @@ public class AcceptRequestDialog extends JDialog {
 	/**
 	 * Create the dialog.
 	 */
-	public AcceptRequestDialog(final GnawApplication application, final Request request) {
-		setBounds(100, 100, 450, 300);
+	public AcceptRequestDialog(final GnawApplication application,
+			final Request request) {
+		setBounds(100, 100, 350, 149);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
@@ -42,22 +43,21 @@ public class AcceptRequestDialog extends JDialog {
 				Alignment.LEADING).addGroup(
 				gl_contentPanel
 						.createSequentialGroup()
-						.addContainerGap()
 						.addGroup(
 								gl_contentPanel
 										.createParallelGroup(Alignment.LEADING)
 										.addComponent(label)
 										.addComponent(label_1)
 										.addComponent(lblDoYouWant))
-						.addContainerGap(354, Short.MAX_VALUE)));
+						.addGap(189)));
 		gl_contentPanel.setVerticalGroup(gl_contentPanel.createParallelGroup(
 				Alignment.LEADING).addGroup(
-				gl_contentPanel.createSequentialGroup().addContainerGap()
+				gl_contentPanel.createSequentialGroup().addGap(5)
 						.addComponent(label)
 						.addPreferredGap(ComponentPlacement.RELATED)
 						.addComponent(label_1).addGap(18)
 						.addComponent(lblDoYouWant)
-						.addContainerGap(179, Short.MAX_VALUE)));
+						.addContainerGap(50, Short.MAX_VALUE)));
 		contentPanel.setLayout(gl_contentPanel);
 		{
 			JPanel buttonPane = new JPanel();
@@ -68,7 +68,9 @@ public class AcceptRequestDialog extends JDialog {
 				okButton.addMouseListener(new MouseAdapter() {
 					@Override
 					public void mouseClicked(MouseEvent e) {
-						application.sendOfferResponse(request.getAddress(), true, request.getFileName(), request.getToken());
+						application.sendOfferResponse(request.getAddress(),
+								true, request.getFileName(), request.getToken());
+						dispose();
 					}
 				});
 				okButton.setActionCommand("OK");
@@ -80,13 +82,13 @@ public class AcceptRequestDialog extends JDialog {
 				cancelButton.addMouseListener(new MouseAdapter() {
 					@Override
 					public void mouseClicked(MouseEvent e) {
-						application.sendOfferResponse(request.getAddress(), false, null, null);
+						application.sendOfferResponse(request.getAddress(),
+								false, null, null);
+						dispose();
 					}
 				});
 				buttonPane.add(cancelButton);
 			}
 		}
-		this.setModalityType(ModalityType.APPLICATION_MODAL);
-		this.setVisible(true);
 	}
 }

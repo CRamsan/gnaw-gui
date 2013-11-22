@@ -84,6 +84,5 @@ public class ProfileDialog extends JDialog {
 		buttonPane.add(okButton);
 		getContentPane().setLayout(groupLayout);
 		this.setModalityType(ModalityType.APPLICATION_MODAL);
-		this.setVisible(true);
 	}
 }

@@ -1,3 +1,4 @@
+
 package com.gnaw.gui;
 
 import java.awt.BorderLayout;
@@ -17,6 +18,8 @@ import com.gnaw.GnawApplication;
 import com.gnaw.interfaces.TransmissionProgressInterface;
 import com.gnaw.request.Request;
 import com.gnaw.request.Request.Action;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class ProgressDialogReceiver extends JDialog implements
 		TransmissionProgressInterface {
@@ -28,7 +31,7 @@ public class ProgressDialogReceiver extends JDialog implements
 	 * Create the dialog.
 	 */
 	public ProgressDialogReceiver(Request request, GnawApplication application) {
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 450, 126);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
@@ -59,12 +62,15 @@ public class ProgressDialogReceiver extends JDialog implements
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
 				JButton cancelButton = new JButton("Cancel");
+				cancelButton.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						dispose();
+					}
+				});
 				cancelButton.setActionCommand("Cancel");
 				buttonPane.add(cancelButton);
 			}
 		}
-		this.setModalityType(ModalityType.APPLICATION_MODAL);
-		this.setVisible(true);
 	}
 
 	@Override

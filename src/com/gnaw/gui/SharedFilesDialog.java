@@ -73,7 +73,6 @@ public class SharedFilesDialog extends JDialog {
 		);
 		getContentPane().setLayout(groupLayout);
 		this.setModalityType(ModalityType.APPLICATION_MODAL);
-		this.setVisible(true);
 	}
 
 }

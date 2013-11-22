@@ -26,13 +26,12 @@ public class SendFileDialog extends JDialog {
 	private final JPanel contentPanel = new JPanel();
 	private JPanel buttonPane;
 	private JTextField textField;
-	private GnawApplication application;
-	private String destination;
-	
+	private String result;
+
 	/**
 	 * Create the dialog.
 	 */
-	public SendFileDialog(final GnawApplication application, final String destination) {
+	public SendFileDialog() {
 		setBounds(100, 100, 461, 113);
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		{
@@ -42,8 +41,8 @@ public class SendFileDialog extends JDialog {
 				JButton okButton = new JButton("OK");
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						SharedFile file = new SharedFile(new File(textField.getText()));
-						application.sendOffer(SendFileDialog.this.destination, file);
+						result = textField.getText().trim();
+						dispose();
 					}
 				});
 				okButton.setActionCommand("OK");
@@ -116,12 +115,11 @@ public class SendFileDialog extends JDialog {
 					.addContainerGap(15, Short.MAX_VALUE))
 		);
 		contentPanel.setLayout(gl_contentPanel);
-		getContentPane().setLayout(groupLayout);
-		
+		getContentPane().setLayout(groupLayout);	
 		this.setModalityType(ModalityType.APPLICATION_MODAL);
-		this.setVisible(true);
-		
-		this.application = application;
-		this.destination = destination;
+	}
+	
+	public String getResult(){
+		return result;
 	}
 }
