@@ -1,6 +1,8 @@
 package com.gnaw.gui;
 
 import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
@@ -9,6 +11,7 @@ import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -30,16 +33,15 @@ public class SendFileDialog extends JDialog {
 	 * Create the dialog.
 	 */
 	public SendFileDialog(final GnawApplication application, final String destination) {
-		setBounds(100, 100, 456, 122);
+		setBounds(100, 100, 461, 113);
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		{
 			buttonPane = new JPanel();
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 			{
 				JButton okButton = new JButton("OK");
-				okButton.addMouseListener(new MouseAdapter() {
-					@Override
-					public void mouseClicked(MouseEvent e) {
+				okButton.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
 						SharedFile file = new SharedFile(new File(textField.getText()));
 						application.sendOffer(SendFileDialog.this.destination, file);
 					}
@@ -50,6 +52,11 @@ public class SendFileDialog extends JDialog {
 			}
 			{
 				JButton cancelButton = new JButton("Cancel");
+				cancelButton.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						dispose();
+					}
+				});
 				cancelButton.setActionCommand("Cancel");
 				buttonPane.add(cancelButton);
 			}
@@ -57,16 +64,15 @@ public class SendFileDialog extends JDialog {
 		GroupLayout groupLayout = new GroupLayout(getContentPane());
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
-				.addComponent(contentPanel, GroupLayout.DEFAULT_SIZE, 458, Short.MAX_VALUE)
-				.addComponent(buttonPane, GroupLayout.DEFAULT_SIZE, 446, Short.MAX_VALUE)
+				.addComponent(contentPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+				.addComponent(buttonPane, GroupLayout.DEFAULT_SIZE, 452, Short.MAX_VALUE)
 		);
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
-					.addComponent(contentPanel, GroupLayout.PREFERRED_SIZE, 50, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(buttonPane, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-					.addGap(184))
+					.addComponent(contentPanel, GroupLayout.PREFERRED_SIZE, 38, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
+					.addComponent(buttonPane, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 		);
 		
 		JLabel lblFile = new JLabel("File:");
@@ -75,6 +81,20 @@ public class SendFileDialog extends JDialog {
 		textField.setColumns(10);
 		
 		JButton btnFile = new JButton("File");
+		btnFile.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				final JFileChooser fc = new JFileChooser();
+				fc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+				int returnVal = fc.showOpenDialog(SendFileDialog.this);
+				if (returnVal == JFileChooser.APPROVE_OPTION) {
+					File file = fc.getSelectedFile();
+					textField.setText(file.getAbsolutePath());
+					System.out.println("Opening: " + file.getName() + ".");
+				} else {
+					System.out.println("Open command cancelled by user.");
+				}
+			}
+		});
 		GroupLayout gl_contentPanel = new GroupLayout(contentPanel);
 		gl_contentPanel.setHorizontalGroup(
 			gl_contentPanel.createParallelGroup(Alignment.LEADING)
@@ -97,6 +117,9 @@ public class SendFileDialog extends JDialog {
 		);
 		contentPanel.setLayout(gl_contentPanel);
 		getContentPane().setLayout(groupLayout);
+		
+		this.setModalityType(ModalityType.APPLICATION_MODAL);
+		this.setVisible(true);
 		
 		this.application = application;
 		this.destination = destination;

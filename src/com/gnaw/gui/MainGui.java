@@ -20,6 +20,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
@@ -125,12 +126,12 @@ public class MainGui extends JFrame implements DataSourceInterface,
 				fc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
 				int returnVal = fc.showOpenDialog(MainGui.this);
 				if (returnVal == JFileChooser.APPROVE_OPTION) {
-	                File file = fc.getSelectedFile();
-	                jTextField1.setText(file.getAbsolutePath());
-	                System.out.println("Opening: " + file.getName() + ".");
-	            } else {
-	            	System.out.println("Open command cancelled by user.");
-	            }
+					File file = fc.getSelectedFile();
+					jTextField1.setText(file.getAbsolutePath());
+					System.out.println("Opening: " + file.getName() + ".");
+				} else {
+					System.out.println("Open command cancelled by user.");
+				}
 			}
 		});
 		jToggleButton1 = new JToggleButton();
@@ -176,7 +177,8 @@ public class MainGui extends JFrame implements DataSourceInterface,
 					jTextField1.setEnabled(false);
 					jButton2.setEnabled(false);
 					jToggleButton2.setText("Disable Sharing");
-					application.saveSettings("shared_folder", jTextField1.getText());
+					application.saveSettings("shared_folder",
+							jTextField1.getText());
 				} else {
 					jTextField1.setEnabled(true);
 					jButton2.setEnabled(true);
@@ -226,7 +228,6 @@ public class MainGui extends JFrame implements DataSourceInterface,
 				ProfileDialog newDialog = new ProfileDialog(application
 						.requestProfile((String) list.getSelectedValue())
 						.getProfile());
-				newDialog.setVisible(true);
 			}
 		});
 
@@ -237,7 +238,6 @@ public class MainGui extends JFrame implements DataSourceInterface,
 				SharedFile sharedFiles = application.requestSharedFiles(
 						(String) list.getSelectedValue()).getSharedFiles();
 				SharedFilesDialog newDialog = new SharedFilesDialog(sharedFiles);
-				newDialog.setVisible(true);
 			}
 		});
 
@@ -247,7 +247,6 @@ public class MainGui extends JFrame implements DataSourceInterface,
 			public void mouseClicked(MouseEvent e) {
 				SendFileDialog newDialog = new SendFileDialog(application,
 						(String) list.getSelectedValue());
-				newDialog.setVisible(true);
 			}
 		});
 
@@ -624,9 +623,44 @@ public class MainGui extends JFrame implements DataSourceInterface,
 
 		this.application = new GnawApplication(this);
 		this.application.init();
-		
-		
-		
+
+		String broadcastttl = this.application
+				.retrieveSettings("broadcast_ttl");
+		if (broadcastttl != null) {
+			int value = -1;
+			switch (Integer.parseInt(broadcastttl)) {
+			case 10:
+				value = 0;
+				break;
+			case 30:
+				value = 1;
+				break;
+			case 60:
+				value = 2;
+				break;
+			case 300:
+				value = 3;
+				break;
+			case 1800:
+				value = 4;
+				break;
+			case -1:
+				value = 5;
+				break;
+			}
+
+			this.jSlider1.setValue(value);
+		}
+
+		String shared = this.application.retrieveSettings("shared_folder");
+		if (shared != null) {
+			this.jTextField1.setText(shared);
+		}
+
+		String profile = this.application.retrieveSettings("profile_name");
+		if (profile != null) {
+			this.jTextField2.setText(profile);
+		}
 	}
 
 	/**

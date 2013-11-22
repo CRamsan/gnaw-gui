@@ -2,6 +2,7 @@ package com.gnaw.gui;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
+import java.awt.Dialog.ModalityType;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -85,5 +86,7 @@ public class AcceptRequestDialog extends JDialog {
 				buttonPane.add(cancelButton);
 			}
 		}
+		this.setModalityType(ModalityType.APPLICATION_MODAL);
+		this.setVisible(true);
 	}
 }

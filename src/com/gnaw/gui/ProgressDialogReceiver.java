@@ -2,6 +2,7 @@ package com.gnaw.gui;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
+import java.awt.Dialog.ModalityType;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -62,6 +63,8 @@ public class ProgressDialogReceiver extends JDialog implements
 				buttonPane.add(cancelButton);
 			}
 		}
+		this.setModalityType(ModalityType.APPLICATION_MODAL);
+		this.setVisible(true);
 	}
 
 	@Override
