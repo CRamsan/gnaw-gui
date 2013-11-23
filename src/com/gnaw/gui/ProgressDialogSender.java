@@ -21,8 +21,7 @@ import com.gnaw.response.Response;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class ProgressDialogSender extends JDialog implements
-		TransmissionProgressInterface {
+public class ProgressDialogSender extends JDialog implements TransmissionProgressInterface {
 
 	private final JPanel contentPanel = new JPanel();
 	private JProgressBar progressBar;
@@ -38,29 +37,14 @@ public class ProgressDialogSender extends JDialog implements
 		if (request.getAction().equals(Action.ACCEPT)) {
 			progressBar = new JProgressBar();
 			GroupLayout gl_contentPanel = new GroupLayout(contentPanel);
-			gl_contentPanel
-					.setHorizontalGroup(gl_contentPanel.createParallelGroup(
-							Alignment.LEADING).addGroup(
-							gl_contentPanel
-									.createSequentialGroup()
-									.addContainerGap()
-									.addComponent(progressBar,
-											GroupLayout.DEFAULT_SIZE, 412,
-											Short.MAX_VALUE).addContainerGap()));
-			gl_contentPanel.setVerticalGroup(gl_contentPanel
-					.createParallelGroup(Alignment.LEADING).addGroup(
-							gl_contentPanel
-									.createSequentialGroup()
-									.addContainerGap()
-									.addComponent(progressBar,
-											GroupLayout.PREFERRED_SIZE,
-											GroupLayout.DEFAULT_SIZE,
-											GroupLayout.PREFERRED_SIZE)
-									.addContainerGap(204, Short.MAX_VALUE)));
+			gl_contentPanel.setHorizontalGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING).addGroup(
+					gl_contentPanel.createSequentialGroup().addContainerGap().addComponent(progressBar, GroupLayout.DEFAULT_SIZE, 412, Short.MAX_VALUE).addContainerGap()));
+			gl_contentPanel.setVerticalGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING).addGroup(
+					gl_contentPanel.createSequentialGroup().addContainerGap()
+							.addComponent(progressBar, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE).addContainerGap(204, Short.MAX_VALUE)));
 			contentPanel.setLayout(gl_contentPanel);
 
-			application.sendPushRequest(request.getAddress(),
-					request.getToken(), this);
+			application.sendPushRequest(request.getAddress(), request.getToken(), this);
 
 		} else {
 			JLabel lblTheUserRejected = new JLabel("The user rejected the file");
@@ -85,6 +69,10 @@ public class ProgressDialogSender extends JDialog implements
 
 	@Override
 	public void setProgress(int status) {
-		progressBar.setValue(status);
+		if (status == -1) {
+			dispose();
+		} else {
+			progressBar.setValue(status);
+		}
 	}
 }

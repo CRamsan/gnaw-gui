@@ -56,6 +56,8 @@ public class MainGui extends JFrame implements DataSourceInterface, ClientFoundE
 	private GnawApplication application;
 	private SharedFile sharedFiles = new SharedFile();
 
+	private ProgressDialogReceiver recv;
+	
 	/**
 	 * Creates new form Main
 	 */
@@ -607,8 +609,8 @@ public class MainGui extends JFrame implements DataSourceInterface, ClientFoundE
 	@Override
 	public boolean deliverPushRequest(Request request) {
 		try {
-			ProgressDialogReceiver newDialog = new ProgressDialogReceiver(request, this.application);
-			newDialog.setVisible(true);
+			recv = new ProgressDialogReceiver(request, this.application);
+			recv.setVisible(true);
 			return true;
 		} catch (Exception e) {
 			return false;
@@ -617,7 +619,6 @@ public class MainGui extends JFrame implements DataSourceInterface, ClientFoundE
 
 	@Override
 	public void setProgress(int status) {
-		// TODO Auto-generated method stub
-
+		recv.setProgress(status);
 	}
 }
