@@ -248,68 +248,87 @@ public class MainGui extends JFrame implements DataSourceInterface, ClientFoundE
 				}
 			}
 		});
+		
+		tglbtnConnect = new JToggleButton("Connect");
+		tglbtnConnect.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {		
+				if (tglbtnConnect.isSelected()) {								
+					if(!application.requestProfile((String) list.getSelectedValue()).getProfile().isNode()){
+						JOptionPane.showMessageDialog(MainGui.this, "This user is not part of a network");
+						tglbtnConnect.setSelected(false);
+					}else{
+						profile.setNode(true);
+						String protocol = application.getProtocol();
+						application.joinChordNetwork(protocol, (String) list.getSelectedValue(), GnawApplication.DEFAULT_MASTER_PORT);
+						tglbtnConnect.setText("Disconnect");						
+					}
+				} else {
+					application.stopChordNetwork();
+					tglbtnConnect.setText("Join");
+					profile.setNode(false);
+				}
+				
+			}
+		});
 
 		GroupLayout jPanel1Layout = new GroupLayout(jPanel1);
-		jPanel1Layout.setHorizontalGroup(jPanel1Layout.createParallelGroup(Alignment.TRAILING).addGroup(
-				jPanel1Layout
-						.createSequentialGroup()
-						.addContainerGap()
-						.addGroup(
-								jPanel1Layout
-										.createParallelGroup(Alignment.LEADING)
-										.addGroup(
-												jPanel1Layout
-														.createSequentialGroup()
-														.addComponent(jSeparator4, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-														.addGroup(
-																jPanel1Layout
-																		.createParallelGroup(Alignment.TRAILING)
-																		.addGroup(
-																				jPanel1Layout
-																						.createSequentialGroup()
-																						.addGap(6)
-																						.addComponent(jScrollPane2, GroupLayout.DEFAULT_SIZE, 330, Short.MAX_VALUE)
-																						.addPreferredGap(ComponentPlacement.RELATED)
-																						.addGroup(
-																								jPanel1Layout
-																										.createParallelGroup(Alignment.TRAILING, false)
-																										.addComponent(btnNewButton, 0, 0, Short.MAX_VALUE)
-																										.addComponent(btnNewButton_2, GroupLayout.DEFAULT_SIZE,
-																												GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-																										.addComponent(tglbtnNewToggleButton, Alignment.LEADING,
-																												GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE)
-																										.addComponent(btnNewButton_1, Alignment.LEADING, GroupLayout.DEFAULT_SIZE,
-																												GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-																		.addGroup(
-																				jPanel1Layout.createSequentialGroup().addComponent(jLabel5)
-																						.addPreferredGap(ComponentPlacement.RELATED)
-																						.addComponent(jTextField3, GroupLayout.DEFAULT_SIZE, 339, Short.MAX_VALUE)
-																						.addPreferredGap(ComponentPlacement.RELATED).addComponent(jButton1))
-																		.addComponent(jScrollPane1, GroupLayout.DEFAULT_SIZE, 459, Short.MAX_VALUE))).addComponent(jLabel6))
-						.addContainerGap()));
-		jPanel1Layout.setVerticalGroup(jPanel1Layout.createParallelGroup(Alignment.LEADING).addGroup(
-				jPanel1Layout
-						.createSequentialGroup()
-						.addContainerGap()
-						.addGroup(
-								jPanel1Layout.createParallelGroup(Alignment.BASELINE)
-										.addComponent(jTextField3, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE).addComponent(jLabel5)
-										.addComponent(jButton1))
-						.addPreferredGap(ComponentPlacement.RELATED)
-						.addGroup(
-								jPanel1Layout.createParallelGroup(Alignment.LEADING).addComponent(jSeparator4, GroupLayout.PREFERRED_SIZE, 10, GroupLayout.PREFERRED_SIZE)
-										.addComponent(jScrollPane1, GroupLayout.PREFERRED_SIZE, 130, GroupLayout.PREFERRED_SIZE))
-						.addGap(14)
-						.addComponent(jLabel6)
-						.addPreferredGap(ComponentPlacement.RELATED)
-						.addGroup(
-								jPanel1Layout
-										.createParallelGroup(Alignment.TRAILING)
-										.addGroup(
-												jPanel1Layout.createSequentialGroup().addComponent(btnNewButton_2).addPreferredGap(ComponentPlacement.RELATED)
-														.addComponent(btnNewButton).addPreferredGap(ComponentPlacement.RELATED).addComponent(btnNewButton_1)
-														.addPreferredGap(ComponentPlacement.RELATED, 79, Short.MAX_VALUE).addComponent(tglbtnNewToggleButton))
-										.addComponent(jScrollPane2, GroupLayout.DEFAULT_SIZE, 191, Short.MAX_VALUE)).addContainerGap()));
+		jPanel1Layout.setHorizontalGroup(
+			jPanel1Layout.createParallelGroup(Alignment.TRAILING)
+				.addGroup(jPanel1Layout.createSequentialGroup()
+					.addContainerGap()
+					.addGroup(jPanel1Layout.createParallelGroup(Alignment.LEADING)
+						.addGroup(jPanel1Layout.createSequentialGroup()
+							.addComponent(jSeparator4, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+							.addGroup(jPanel1Layout.createParallelGroup(Alignment.TRAILING)
+								.addGroup(jPanel1Layout.createSequentialGroup()
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addComponent(jScrollPane2, GroupLayout.DEFAULT_SIZE, 280, Short.MAX_VALUE)
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addGroup(jPanel1Layout.createParallelGroup(Alignment.TRAILING, false)
+										.addComponent(tglbtnConnect, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+										.addComponent(btnNewButton, 0, 0, Short.MAX_VALUE)
+										.addComponent(btnNewButton_2, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+										.addComponent(tglbtnNewToggleButton, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE)
+										.addComponent(btnNewButton_1, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+								.addGroup(jPanel1Layout.createSequentialGroup()
+									.addComponent(jLabel5)
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addComponent(jTextField3, GroupLayout.DEFAULT_SIZE, 339, Short.MAX_VALUE)
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addComponent(jButton1))
+								.addComponent(jScrollPane1, GroupLayout.DEFAULT_SIZE, 459, Short.MAX_VALUE)))
+						.addComponent(jLabel6))
+					.addContainerGap())
+		);
+		jPanel1Layout.setVerticalGroup(
+			jPanel1Layout.createParallelGroup(Alignment.LEADING)
+				.addGroup(jPanel1Layout.createSequentialGroup()
+					.addContainerGap()
+					.addGroup(jPanel1Layout.createParallelGroup(Alignment.BASELINE)
+						.addComponent(jTextField3, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(jLabel5)
+						.addComponent(jButton1))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(jPanel1Layout.createParallelGroup(Alignment.LEADING)
+						.addComponent(jSeparator4, GroupLayout.PREFERRED_SIZE, 10, GroupLayout.PREFERRED_SIZE)
+						.addComponent(jScrollPane1, GroupLayout.PREFERRED_SIZE, 130, GroupLayout.PREFERRED_SIZE))
+					.addGap(14)
+					.addComponent(jLabel6)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(jPanel1Layout.createParallelGroup(Alignment.TRAILING)
+						.addGroup(jPanel1Layout.createSequentialGroup()
+							.addComponent(btnNewButton_2)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(btnNewButton)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(btnNewButton_1)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(tglbtnConnect)
+							.addPreferredGap(ComponentPlacement.RELATED, 48, Short.MAX_VALUE)
+							.addComponent(tglbtnNewToggleButton))
+						.addComponent(jScrollPane2, GroupLayout.DEFAULT_SIZE, 191, Short.MAX_VALUE))
+					.addContainerGap())
+		);
 		jScrollPane2.setViewportView(list);
 		jPanel1.setLayout(jPanel1Layout);
 
@@ -339,75 +358,106 @@ public class MainGui extends JFrame implements DataSourceInterface, ClientFoundE
 				application.saveSettings("profile_name", profile.getName());
 			}
 		});
+		
+		JLabel lblNetwork = new JLabel("Network");
+		
+		final JToggleButton tglbtnCreateNetwork = new JToggleButton("Create network");
+		tglbtnCreateNetwork.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				if (tglbtnCreateNetwork.isSelected()) {
+					tglbtnCreateNetwork.setText("Disable network");
+					application.createChordNetwork();
+					profile.setNode(true);
+				} else {
+					tglbtnCreateNetwork.setText("Create network");
+					profile.setNode(false);
+				}
+				
+				
+			}
+		});
 
 		GroupLayout jPanel2Layout = new GroupLayout(jPanel2);
-		jPanel2Layout.setHorizontalGroup(jPanel2Layout.createParallelGroup(Alignment.TRAILING).addGroup(
-				jPanel2Layout
-						.createSequentialGroup()
-						.addGroup(
-								jPanel2Layout
-										.createParallelGroup(Alignment.LEADING)
-										.addComponent(jSeparator1, Alignment.TRAILING, GroupLayout.PREFERRED_SIZE, 471, Short.MAX_VALUE)
-										.addGroup(
-												Alignment.TRAILING,
-												jPanel2Layout
-														.createSequentialGroup()
-														.addContainerGap()
-														.addGroup(
-																jPanel2Layout
-																		.createParallelGroup(Alignment.TRAILING)
-																		.addComponent(jSeparator3, GroupLayout.PREFERRED_SIZE, 459, Short.MAX_VALUE)
-																		.addComponent(jSeparator2, GroupLayout.PREFERRED_SIZE, 459, Short.MAX_VALUE)
-																		.addComponent(jSlider1, GroupLayout.DEFAULT_SIZE, 459, Short.MAX_VALUE)
-																		.addGroup(
-																				Alignment.LEADING,
-																				jPanel2Layout.createSequentialGroup().addGap(12)
-																						.addComponent(jLabel4, GroupLayout.PREFERRED_SIZE, 45, GroupLayout.PREFERRED_SIZE)
-																						.addPreferredGap(ComponentPlacement.RELATED)
-																						.addComponent(jTextField2, GroupLayout.DEFAULT_SIZE, 320, Short.MAX_VALUE)
-																						.addPreferredGap(ComponentPlacement.RELATED).addComponent(btnSave))
-																		.addComponent(jLabel1)
-																		.addComponent(jLabel2)
-																		.addComponent(jLabel3)
-																		.addGroup(
-																				jPanel2Layout.createSequentialGroup().addGap(12).addComponent(lbDiscoveryTime)
-																						.addPreferredGap(ComponentPlacement.RELATED, 285, Short.MAX_VALUE)
-																						.addComponent(jToggleButton1))
-																		.addGroup(
-																				jPanel2Layout.createSequentialGroup()
-																						.addComponent(jTextField1, GroupLayout.DEFAULT_SIZE, 367, Short.MAX_VALUE)
-																						.addPreferredGap(ComponentPlacement.RELATED).addComponent(jButton2))))
-										.addGroup(Alignment.TRAILING, jPanel2Layout.createSequentialGroup().addContainerGap(330, Short.MAX_VALUE).addComponent(jToggleButton2)))
-						.addContainerGap()));
-		jPanel2Layout.setVerticalGroup(jPanel2Layout.createParallelGroup(Alignment.LEADING).addGroup(
-				jPanel2Layout
-						.createSequentialGroup()
-						.addContainerGap()
-						.addComponent(jLabel1)
-						.addPreferredGap(ComponentPlacement.RELATED)
-						.addComponent(jSlider1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addPreferredGap(ComponentPlacement.RELATED)
-						.addGroup(jPanel2Layout.createParallelGroup(Alignment.BASELINE).addComponent(lbDiscoveryTime).addComponent(jToggleButton1))
-						.addGap(12)
-						.addComponent(jSeparator1, GroupLayout.PREFERRED_SIZE, 10, GroupLayout.PREFERRED_SIZE)
-						.addPreferredGap(ComponentPlacement.RELATED)
-						.addComponent(jLabel2)
-						.addPreferredGap(ComponentPlacement.RELATED)
-						.addGroup(
-								jPanel2Layout.createParallelGroup(Alignment.BASELINE)
-										.addComponent(jTextField1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE).addComponent(jButton2))
-						.addGap(12)
-						.addComponent(jToggleButton2)
-						.addPreferredGap(ComponentPlacement.UNRELATED)
-						.addComponent(jSeparator2, GroupLayout.PREFERRED_SIZE, 10, GroupLayout.PREFERRED_SIZE)
-						.addPreferredGap(ComponentPlacement.RELATED)
-						.addComponent(jLabel3)
-						.addPreferredGap(ComponentPlacement.RELATED)
-						.addGroup(
-								jPanel2Layout.createParallelGroup(Alignment.BASELINE).addComponent(jLabel4)
-										.addComponent(jTextField2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE).addComponent(btnSave))
-						.addPreferredGap(ComponentPlacement.UNRELATED).addComponent(jSeparator3, GroupLayout.PREFERRED_SIZE, 10, GroupLayout.PREFERRED_SIZE)
-						.addContainerGap(130, Short.MAX_VALUE)));
+		jPanel2Layout.setHorizontalGroup(
+			jPanel2Layout.createParallelGroup(Alignment.TRAILING)
+				.addGroup(jPanel2Layout.createSequentialGroup()
+					.addGroup(jPanel2Layout.createParallelGroup(Alignment.LEADING)
+						.addComponent(jSeparator1, Alignment.TRAILING, GroupLayout.PREFERRED_SIZE, 471, Short.MAX_VALUE)
+						.addGroup(Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+							.addContainerGap()
+							.addGroup(jPanel2Layout.createParallelGroup(Alignment.LEADING)
+								.addComponent(jSeparator3, GroupLayout.PREFERRED_SIZE, 459, Short.MAX_VALUE)
+								.addComponent(jSeparator2, GroupLayout.PREFERRED_SIZE, 459, Short.MAX_VALUE)
+								.addComponent(jSlider1, GroupLayout.DEFAULT_SIZE, 459, Short.MAX_VALUE)
+								.addGroup(jPanel2Layout.createSequentialGroup()
+									.addGap(12)
+									.addComponent(jLabel4, GroupLayout.PREFERRED_SIZE, 45, GroupLayout.PREFERRED_SIZE)
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addComponent(jTextField2, GroupLayout.DEFAULT_SIZE, 316, Short.MAX_VALUE)
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addComponent(btnSave))
+								.addComponent(jLabel1)
+								.addComponent(jLabel2)
+								.addComponent(jLabel3)
+								.addGroup(jPanel2Layout.createSequentialGroup()
+									.addGap(12)
+									.addComponent(lbDiscoveryTime)
+									.addPreferredGap(ComponentPlacement.RELATED, 285, Short.MAX_VALUE)
+									.addComponent(jToggleButton1))
+								.addGroup(jPanel2Layout.createSequentialGroup()
+									.addComponent(jTextField1, GroupLayout.DEFAULT_SIZE, 367, Short.MAX_VALUE)
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addComponent(jButton2))))
+						.addGroup(Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+							.addContainerGap(330, Short.MAX_VALUE)
+							.addComponent(jToggleButton2))
+						.addGroup(jPanel2Layout.createSequentialGroup()
+							.addContainerGap()
+							.addComponent(lblNetwork))
+						.addGroup(Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+							.addContainerGap(304, Short.MAX_VALUE)
+							.addComponent(tglbtnCreateNetwork)))
+					.addContainerGap())
+		);
+		jPanel2Layout.setVerticalGroup(
+			jPanel2Layout.createParallelGroup(Alignment.LEADING)
+				.addGroup(jPanel2Layout.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(jLabel1)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(jSlider1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(jPanel2Layout.createParallelGroup(Alignment.BASELINE)
+						.addComponent(lbDiscoveryTime)
+						.addComponent(jToggleButton1))
+					.addGap(12)
+					.addComponent(jSeparator1, GroupLayout.PREFERRED_SIZE, 10, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(jLabel2)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(jPanel2Layout.createParallelGroup(Alignment.BASELINE)
+						.addComponent(jTextField1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(jButton2))
+					.addGap(12)
+					.addComponent(jToggleButton2)
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addComponent(jSeparator2, GroupLayout.PREFERRED_SIZE, 10, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(jLabel3)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(jPanel2Layout.createParallelGroup(Alignment.BASELINE)
+						.addComponent(jLabel4)
+						.addComponent(jTextField2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(btnSave))
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addComponent(jSeparator3, GroupLayout.PREFERRED_SIZE, 10, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(lblNetwork)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(tglbtnCreateNetwork)
+					.addContainerGap(72, Short.MAX_VALUE))
+		);
 		jPanel2.setLayout(jPanel2Layout);
 
 		jTabbedPane1.addTab("Settings", jPanel2);
@@ -419,7 +469,6 @@ public class MainGui extends JFrame implements DataSourceInterface, ClientFoundE
 		pack();
 
 		this.application = new GnawApplication(this);
-		this.application.init();
 
 		String broadcastttl = this.application.retrieveSettings("broadcast_ttl");
 		if (broadcastttl != null) {
@@ -520,6 +569,7 @@ public class MainGui extends JFrame implements DataSourceInterface, ClientFoundE
 	private JButton btnNewButton;
 	private JButton btnNewButton_1;
 	private JButton btnNewButton_2;
+	private JToggleButton tglbtnConnect;
 
 	@Override
 	public Profile getProfile() {
