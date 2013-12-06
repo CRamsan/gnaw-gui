@@ -8,8 +8,6 @@ package com.gnaw.gui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.io.File;
 
 import javax.swing.DefaultListModel;
@@ -72,9 +70,8 @@ public class MainGui extends JFrame implements DataSourceInterface, ClientFoundE
 		jLabel5 = new JLabel();
 		jTextField3 = new JTextField();
 		jButton1 = new JButton();
-		jButton1.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
+		jButton1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
 				application.searchFile(jTextField3.getText());
 			}
 		});
@@ -177,6 +174,7 @@ public class MainGui extends JFrame implements DataSourceInterface, ClientFoundE
 					jToggleButton2.setText("Disable Sharing");
 					application.saveSettings("shared_folder", jTextField1.getText());
 				} else {
+					sharedFiles = null;
 					jTextField1.setEnabled(true);
 					jButton2.setEnabled(true);
 					jToggleButton2.setText("Enable Sharing");
@@ -261,8 +259,18 @@ public class MainGui extends JFrame implements DataSourceInterface, ClientFoundE
 						String protocol = application.getProtocol();
 						application.joinChordNetwork(protocol, (String) list.getSelectedValue(), GnawApplication.DEFAULT_MASTER_PORT);
 						tglbtnConnect.setText("Disconnect");						
+						
+						if(sharedFiles != null){
+							application.shareFile(sharedFiles);
+						}
+						
 					}
 				} else {
+					
+					if(sharedFiles != null){
+						application.unshareFile(sharedFiles);
+					}
+					
 					application.stopChordNetwork();
 					tglbtnConnect.setText("Join");
 					profile.setNode(false);
