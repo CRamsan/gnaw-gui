@@ -72,7 +72,7 @@ public class MainGui extends JFrame implements DataSourceInterface, ClientFoundE
 		jButton1 = new JButton();
 		jButton1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				application.searchFile(jTextField3.getText());
+				application.searchFile(jTextField3.getText(), jTextArea1);
 			}
 		});
 		jScrollPane1 = new JScrollPane();
