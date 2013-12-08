@@ -700,7 +700,7 @@ public class MainGui extends JFrame implements DataSourceInterface, ClientFoundE
 	 */
 	private void unshareFiles() {
 		for (String filename : sharedFiles.getSharedFilenames()) {
-			application.shareFile(filename);
+			application.unshareFile(filename);
 		}
 	}
 }
