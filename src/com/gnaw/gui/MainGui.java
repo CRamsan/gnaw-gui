@@ -44,6 +44,7 @@ import com.gnaw.interfaces.DataSourceInterface;
 import com.gnaw.models.SharedFile;
 import com.gnaw.request.Request;
 
+
 /**
  * 
  * @author cesar
@@ -173,11 +174,14 @@ public class MainGui extends JFrame implements DataSourceInterface, ClientFoundE
 					jButton2.setEnabled(false);
 					jToggleButton2.setText("Disable Sharing");
 					application.saveSettings("shared_folder", jTextField1.getText());
+					shareFiles();
 				} else {
+					unshareFiles();
 					sharedFiles = null;
 					jTextField1.setEnabled(true);
 					jButton2.setEnabled(true);
 					jToggleButton2.setText("Enable Sharing");
+					
 				}
 			}
 		});
@@ -259,23 +263,25 @@ public class MainGui extends JFrame implements DataSourceInterface, ClientFoundE
 						String protocol = application.getProtocol();
 						application.joinChordNetwork(protocol, (String) list.getSelectedValue(), GnawApplication.DEFAULT_MASTER_PORT);
 						tglbtnConnect.setText("Disconnect");						
-						
-						if(sharedFiles != null){
-							application.shareFile(sharedFiles);
-						}
+
+//						if(jToggleButton2.isSelected() && sharedFiles != null){
+//							// insert files into Chord network
+//							shareFiles();
+//						}
 						
 					}
 				} else {
-					
+
 					if(sharedFiles != null){
-						application.unshareFile(sharedFiles);
+						// remove files from Chord network
+						unshareFiles();
 					}
-					
+
 					application.stopChordNetwork();
 					tglbtnConnect.setText("Join");
 					profile.setNode(false);
 				}
-				
+
 			}
 		});
 
@@ -678,5 +684,23 @@ public class MainGui extends JFrame implements DataSourceInterface, ClientFoundE
 	@Override
 	public void setProgress(int status) {
 		recv.setProgress(status);
+	}
+	
+	/**
+	 * Share all files in shareFiles.
+	 */
+	private void shareFiles() {
+		for (String filename : sharedFiles.getSharedFilenames()) {
+			application.shareFile(filename);
+		}
+	}
+	
+	/**
+	 * Unshare all files in sharedFiles.
+	 */
+	private void unshareFiles() {
+		for (String filename : sharedFiles.getSharedFilenames()) {
+			application.shareFile(filename);
+		}
 	}
 }
