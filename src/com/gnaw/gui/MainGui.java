@@ -73,11 +73,10 @@ public class MainGui extends JFrame implements DataSourceInterface, ClientFoundE
 		jButton1 = new JButton();
 		jButton1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				application.searchFile(jTextField3.getText(), jTextArea1);
+				application.searchFile(jTextField3.getText(), listModelSearch);
 			}
 		});
 		jScrollPane1 = new JScrollPane();
-		jTextArea1 = new JTextArea();
 		jSeparator4 = new JSeparator();
 		jLabel6 = new JLabel();
 		jScrollPane2 = new JScrollPane();
@@ -199,12 +198,12 @@ public class MainGui extends JFrame implements DataSourceInterface, ClientFoundE
 
 		jButton1.setText("Go");
 
-		jTextArea1.setColumns(20);
-		jTextArea1.setRows(5);
-		jScrollPane1.setViewportView(jTextArea1);
-
 		jLabel6.setText("Nearby");
 
+		listModelSearch = new DefaultListModel<String>();
+		list_1 = new JList(listModelSearch);
+
+		
 		listModel = new DefaultListModel<String>();
 		list = new JList(listModel);
 
@@ -284,19 +283,23 @@ public class MainGui extends JFrame implements DataSourceInterface, ClientFoundE
 
 			}
 		});
+		
+		JSeparator separator = new JSeparator();
+		
+		btnDownload = new JButton("Download");
 
 		GroupLayout jPanel1Layout = new GroupLayout(jPanel1);
 		jPanel1Layout.setHorizontalGroup(
-			jPanel1Layout.createParallelGroup(Alignment.TRAILING)
+			jPanel1Layout.createParallelGroup(Alignment.LEADING)
 				.addGroup(jPanel1Layout.createSequentialGroup()
 					.addContainerGap()
 					.addGroup(jPanel1Layout.createParallelGroup(Alignment.LEADING)
 						.addGroup(jPanel1Layout.createSequentialGroup()
 							.addComponent(jSeparator4, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-							.addGroup(jPanel1Layout.createParallelGroup(Alignment.TRAILING)
-								.addGroup(jPanel1Layout.createSequentialGroup()
+							.addGroup(jPanel1Layout.createParallelGroup(Alignment.LEADING)
+								.addGroup(Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
 									.addPreferredGap(ComponentPlacement.RELATED)
-									.addComponent(jScrollPane2, GroupLayout.DEFAULT_SIZE, 280, Short.MAX_VALUE)
+									.addComponent(jScrollPane2, GroupLayout.DEFAULT_SIZE, 330, Short.MAX_VALUE)
 									.addPreferredGap(ComponentPlacement.RELATED)
 									.addGroup(jPanel1Layout.createParallelGroup(Alignment.TRAILING, false)
 										.addComponent(tglbtnConnect, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -304,14 +307,16 @@ public class MainGui extends JFrame implements DataSourceInterface, ClientFoundE
 										.addComponent(btnNewButton_2, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 										.addComponent(tglbtnNewToggleButton, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE)
 										.addComponent(btnNewButton_1, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-								.addGroup(jPanel1Layout.createSequentialGroup()
+								.addGroup(Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
 									.addComponent(jLabel5)
 									.addPreferredGap(ComponentPlacement.RELATED)
 									.addComponent(jTextField3, GroupLayout.DEFAULT_SIZE, 339, Short.MAX_VALUE)
 									.addPreferredGap(ComponentPlacement.RELATED)
 									.addComponent(jButton1))
 								.addComponent(jScrollPane1, GroupLayout.DEFAULT_SIZE, 459, Short.MAX_VALUE)))
-						.addComponent(jLabel6))
+						.addComponent(jLabel6)
+						.addComponent(separator, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 459, Short.MAX_VALUE)
+						.addComponent(btnDownload, Alignment.TRAILING))
 					.addContainerGap())
 		);
 		jPanel1Layout.setVerticalGroup(
@@ -325,8 +330,12 @@ public class MainGui extends JFrame implements DataSourceInterface, ClientFoundE
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(jPanel1Layout.createParallelGroup(Alignment.LEADING)
 						.addComponent(jSeparator4, GroupLayout.PREFERRED_SIZE, 10, GroupLayout.PREFERRED_SIZE)
-						.addComponent(jScrollPane1, GroupLayout.PREFERRED_SIZE, 130, GroupLayout.PREFERRED_SIZE))
-					.addGap(14)
+						.addComponent(jScrollPane1, GroupLayout.PREFERRED_SIZE, 101, GroupLayout.PREFERRED_SIZE))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(btnDownload)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(separator, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(jLabel6)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(jPanel1Layout.createParallelGroup(Alignment.TRAILING)
@@ -338,11 +347,13 @@ public class MainGui extends JFrame implements DataSourceInterface, ClientFoundE
 							.addComponent(btnNewButton_1)
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(tglbtnConnect)
-							.addPreferredGap(ComponentPlacement.RELATED, 48, Short.MAX_VALUE)
+							.addPreferredGap(ComponentPlacement.RELATED, 46, Short.MAX_VALUE)
 							.addComponent(tglbtnNewToggleButton))
-						.addComponent(jScrollPane2, GroupLayout.DEFAULT_SIZE, 191, Short.MAX_VALUE))
+						.addComponent(jScrollPane2, GroupLayout.DEFAULT_SIZE, 189, Short.MAX_VALUE))
 					.addContainerGap())
 		);
+		
+		jScrollPane1.setViewportView(list_1);
 		jScrollPane2.setViewportView(list);
 		jPanel1.setLayout(jPanel1Layout);
 
@@ -570,7 +581,6 @@ public class MainGui extends JFrame implements DataSourceInterface, ClientFoundE
 	private JSeparator jSeparator4;
 	private JSlider jSlider1;
 	private JTabbedPane jTabbedPane1;
-	private JTextArea jTextArea1;
 	private JTextField jTextField1;
 	private JTextField jTextField2;
 	private JTextField jTextField3;
@@ -580,10 +590,13 @@ public class MainGui extends JFrame implements DataSourceInterface, ClientFoundE
 	private JToggleButton tglbtnNewToggleButton;
 	private JList list;
 	private DefaultListModel listModel;
+	private DefaultListModel listModelSearch;
 	private JButton btnNewButton;
 	private JButton btnNewButton_1;
 	private JButton btnNewButton_2;
 	private JToggleButton tglbtnConnect;
+	private JList list_1;
+	private JButton btnDownload;
 
 	@Override
 	public Profile getProfile() {
